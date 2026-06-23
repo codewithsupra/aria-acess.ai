@@ -1,0 +1,337 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" style="font-family: 'SF Mono', 'Fira Code', monospace;">
+  <defs>
+    <style>
+      /* ── Reset ── */
+      * { box-sizing: border-box; }
+
+      /* ── Keyframes ── */
+
+      /* Window fade-in */
+      @keyframes windowIn {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Typing cursor blink */
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0; }
+      }
+
+      /* Typing – reveal text by expanding clip */
+      @keyframes typeUrl {
+        from { clip-path: inset(0 100% 0 0); }
+        to   { clip-path: inset(0 0% 0 0); }
+      }
+
+      /* Scan bar sweep */
+      @keyframes scanBar {
+        0%   { transform: translateY(0);    opacity: 0; }
+        5%   { opacity: 1; }
+        95%  { opacity: 1; }
+        100% { transform: translateY(300px); opacity: 0; }
+      }
+
+      /* Score ring draw */
+      @keyframes ringDraw {
+        from { stroke-dashoffset: 263; }
+        to   { stroke-dashoffset: 53; }  /* 80/100 * 263 ≈ 210 → offset = 263-210=53 */
+      }
+
+      /* Score number count-up */
+      @keyframes fadeScore {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
+      /* Issue cards slide in */
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-14px); }
+        to   { opacity: 1; transform: translateX(0); }
+      }
+
+      /* Pulse dot */
+      @keyframes pulse {
+        0%, 100% { r: 4; opacity: 1; }
+        50%       { r: 7; opacity: 0.5; }
+      }
+
+      /* AI tag shimmer */
+      @keyframes shimmer {
+        0%   { stop-color: #7c3aed; }
+        50%  { stop-color: #a855f7; }
+        100% { stop-color: #7c3aed; }
+      }
+
+      /* ── Timing helpers ── */
+      .win   { animation: windowIn  0.5s  0.2s  ease-out both; }
+      .url   { animation: typeUrl   1.2s  1.0s  steps(30) both; }
+      .bar   { animation: scanBar   2.0s  2.5s  ease-in-out both; }
+      .ring  { animation: ringDraw  1.0s  5.0s  ease-out both; stroke-dasharray: 263; stroke-dashoffset: 263; }
+      .sc    { animation: fadeScore 0.4s  5.8s  ease-out both; }
+      .i1    { animation: slideIn   0.4s  6.2s  ease-out both; }
+      .i2    { animation: slideIn   0.4s  6.6s  ease-out both; }
+      .i3    { animation: slideIn   0.4s  7.0s  ease-out both; }
+      .i4    { animation: slideIn   0.4s  7.4s  ease-out both; }
+    </style>
+
+    <!-- Radial glow for background -->
+    <radialGradient id="bgGlow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%"   stop-color="#1a0a3d"/>
+      <stop offset="100%" stop-color="#050816"/>
+    </radialGradient>
+
+    <!-- Purple gradient for the scan button -->
+    <linearGradient id="btnGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+
+    <!-- Green gradient for score arc -->
+    <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+
+    <!-- Scan bar gradient -->
+    <linearGradient id="scanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0"/>
+      <stop offset="50%"  stop-color="#a855f7" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- AI badge gradient (animated) -->
+    <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#7c3aed">
+        <animate attributeName="stop-color" values="#7c3aed;#a855f7;#7c3aed" dur="2s" repeatCount="indefinite" begin="7s"/>
+      </stop>
+      <stop offset="100%" stop-color="#6d28d9">
+        <animate attributeName="stop-color" values="#6d28d9;#9333ea;#6d28d9" dur="2s" repeatCount="indefinite" begin="7s"/>
+      </stop>
+    </linearGradient>
+
+    <!-- Clip for the fake browser screen -->
+    <clipPath id="screenClip">
+      <rect x="30" y="80" width="840" height="420" rx="4"/>
+    </clipPath>
+
+    <!-- Clip for issue card text overflow -->
+    <clipPath id="card1Clip"><rect x="440" y="290" width="420" height="48"/></clipPath>
+    <clipPath id="card2Clip"><rect x="440" y="348" width="420" height="48"/></clipPath>
+    <clipPath id="card3Clip"><rect x="440" y="406" width="420" height="48"/></clipPath>
+    <clipPath id="card4Clip"><rect x="440" y="464" width="420" height="48"/></clipPath>
+  </defs>
+
+  <!-- ══════════════════════════════════════════════════
+       BACKGROUND
+  ══════════════════════════════════════════════════ -->
+  <rect width="900" height="540" fill="url(#bgGlow)" rx="16"/>
+
+  <!-- Subtle grid lines -->
+  <g opacity="0.04" stroke="#ffffff" stroke-width="1">
+    <line x1="0" y1="135" x2="900" y2="135"/>
+    <line x1="0" y1="270" x2="900" y2="270"/>
+    <line x1="0" y1="405" x2="900" y2="405"/>
+    <line x1="225" y1="0" x2="225" y2="540"/>
+    <line x1="450" y1="0" x2="450" y2="540"/>
+    <line x1="675" y1="0" x2="675" y2="540"/>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════
+       BROWSER CHROME
+  ══════════════════════════════════════════════════ -->
+  <g class="win">
+    <!-- Window shadow -->
+    <rect x="22" y="28" width="856" height="490" rx="14" fill="#000" opacity="0.45"/>
+
+    <!-- Window frame -->
+    <rect x="16" y="22" width="868" height="496" rx="12" fill="#0f0b1e" stroke="#ffffff14" stroke-width="1"/>
+
+    <!-- Title bar -->
+    <rect x="16" y="22" width="868" height="44" rx="12" fill="#18103a"/>
+    <rect x="16" y="44" width="868" height="22" fill="#18103a"/>
+
+    <!-- Traffic lights -->
+    <circle cx="46" cy="44" r="6" fill="#ff5f57"/>
+    <circle cx="66" cy="44" r="6" fill="#febc2e"/>
+    <circle cx="86" cy="44" r="6" fill="#28c840"/>
+
+    <!-- Address bar -->
+    <rect x="110" y="32" width="640" height="24" rx="6" fill="#0d0920" stroke="#ffffff18" stroke-width="1"/>
+
+    <!-- Lock icon -->
+    <text x="124" y="48" font-size="11" fill="#ffffff50">🔒</text>
+
+    <!-- URL text — typed in -->
+    <text x="142" y="49" font-size="12" fill="#a78bfa" class="url" style="clip-path: inset(0 100% 0 0); animation: typeUrl 1.2s 1.0s steps(30) both;">
+      aria-access.vercel.app
+    </text>
+
+    <!-- Cursor -->
+    <rect x="320" y="36" width="2" height="16" fill="#a78bfa" style="animation: blink 0.8s 1.0s step-end 6;">
+      <animate attributeName="opacity" values="1;0;1" dur="0.8s" begin="1.0s" repeatCount="6"/>
+    </rect>
+
+    <!-- Refresh icon -->
+    <text x="768" y="49" font-size="14" fill="#ffffff40">↻</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════
+       SCREEN CONTENT
+  ══════════════════════════════════════════════════ -->
+  <g clip-path="url(#screenClip)" class="win">
+
+    <!-- Page background inside browser -->
+    <rect x="30" y="66" width="840" height="434" fill="#050816"/>
+
+    <!-- ── Fake page being scanned (left column) ── -->
+
+    <!-- Page nav bar -->
+    <rect x="30" y="66" width="840" height="36" fill="#0d0920" opacity="0.8"/>
+    <text x="60" y="89" font-size="13" font-weight="700" fill="#c4b5fd">acme-corp.io</text>
+
+    <!-- Fake hero image block -->
+    <rect x="40" y="112" width="390" height="160" rx="8" fill="#1a1035" stroke="#ffffff0a" stroke-width="1"/>
+    <text x="235" y="200" font-size="12" fill="#ffffff20" text-anchor="middle">[ hero image ]</text>
+
+    <!-- Missing alt text indicator -->
+    <rect x="40" y="112" width="390" height="160" rx="8" fill="none" stroke="#ef444460" stroke-width="2" stroke-dasharray="6 3">
+      <animate attributeName="stroke-opacity" values="0;0;0;0.6;0.6" dur="5s" begin="2.5s" fill="freeze"/>
+    </rect>
+
+    <!-- Fake heading -->
+    <rect x="40" y="284" width="260" height="14" rx="3" fill="#3b1f6a" opacity="0.8"/>
+    <!-- Fake paragraph lines -->
+    <rect x="40" y="308" width="380" height="8" rx="2" fill="#1e1040" opacity="0.6"/>
+    <rect x="40" y="322" width="340" height="8" rx="2" fill="#1e1040" opacity="0.6"/>
+    <rect x="40" y="336" width="360" height="8" rx="2" fill="#1e1040" opacity="0.6"/>
+
+    <!-- Low contrast button -->
+    <rect x="40" y="360" width="120" height="34" rx="6" fill="#9ca3af"/>
+    <text x="100" y="382" font-size="12" fill="#d1d5db" text-anchor="middle">Get Started</text>
+    <!-- Low contrast badge -->
+    <rect x="40" y="360" width="120" height="34" rx="6" fill="none" stroke="#f59e0b60" stroke-width="2" stroke-dasharray="5 3">
+      <animate attributeName="stroke-opacity" values="0;0;0;0;0.6;0.6" dur="5.5s" begin="2.5s" fill="freeze"/>
+    </rect>
+
+    <!-- Form without label -->
+    <rect x="40" y="408" width="300" height="34" rx="6" fill="#0f0920" stroke="#ffffff18" stroke-width="1"/>
+    <text x="55" y="430" font-size="11" fill="#ffffff30">Search...</text>
+    <rect x="40" y="408" width="300" height="34" rx="6" fill="none" stroke="#ef444460" stroke-width="2" stroke-dasharray="5 3">
+      <animate attributeName="stroke-opacity" values="0;0;0;0;0;0.6;0.6" dur="6s" begin="2.5s" fill="freeze"/>
+    </rect>
+
+    <!-- ── Scan bar ── -->
+    <rect x="30" y="102" width="420" height="30" fill="url(#scanGrad)" class="bar" opacity="0"/>
+
+    <!-- ── Divider ── -->
+    <line x1="455" y1="102" x2="455" y2="500" stroke="#ffffff0f" stroke-width="1"/>
+
+    <!-- ── Results Panel (right column) ── -->
+
+    <!-- "Scanning…" label — shows during scan, hides after -->
+    <g style="animation: fadeScore 0.3s 2.4s ease-out both; opacity: 0;">
+      <circle cx="480" cy="130" r="4" fill="#a855f7">
+        <animate attributeName="r" values="4;7;4" dur="1s" begin="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;0.4;1" dur="1s" begin="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <text x="492" y="135" font-size="13" fill="#a78bfa">Scanning with axe-core + GPT-4o Vision…</text>
+    </g>
+
+    <!-- Score ring (appears after scan) -->
+    <g class="sc" style="opacity: 0;">
+
+      <!-- Ring background -->
+      <circle cx="560" cy="195" r="52" fill="none" stroke="#1e1040" stroke-width="10"/>
+
+      <!-- Score arc -->
+      <circle cx="560" cy="195" r="52" fill="none"
+              stroke="url(#arcGrad)" stroke-width="10"
+              stroke-linecap="round"
+              stroke-dasharray="263"
+              transform="rotate(-90 560 195)"
+              class="ring"/>
+
+      <!-- Score number -->
+      <text x="560" y="199" font-size="26" font-weight="800" fill="#22c55e" text-anchor="middle">80</text>
+      <text x="560" y="215" font-size="11" fill="#6b7280" text-anchor="middle">Good</text>
+
+      <!-- Score label -->
+      <text x="560" y="265" font-size="14" font-weight="700" fill="#f3f4f6" text-anchor="middle">Accessibility Score</text>
+      <text x="560" y="282" font-size="11" fill="#6b7280" text-anchor="middle">acme-corp.io · 4 issues found</text>
+
+      <!-- Severity pills -->
+      <rect x="470" y="294" width="68" height="20" rx="10" fill="#ef444420"/>
+      <text x="504" y="308" font-size="10" fill="#ef4444" text-anchor="middle">● 1 Critical</text>
+
+      <rect x="544" y="294" width="64" height="20" rx="10" fill="#f9731620"/>
+      <text x="576" y="308" font-size="10" fill="#f97316" text-anchor="middle">● 1 Serious</text>
+
+      <rect x="614" y="294" width="72" height="20" rx="10" fill="#f59e0b20"/>
+      <text x="650" y="308" font-size="10" fill="#f59e0b" text-anchor="middle">● 2 Moderate</text>
+
+    </g>
+
+    <!-- ── Issue Cards ── -->
+
+    <!-- Card 1 — Critical -->
+    <g class="i1" style="opacity: 0;">
+      <rect x="468" y="324" width="410" height="46" rx="8" fill="#1a0a1a" stroke="#ef444430" stroke-width="1"/>
+      <rect x="468" y="324" width="4" height="46" rx="2" fill="#ef4444"/>
+      <text x="482" y="341" font-size="10" font-weight="700" fill="#ef4444">CRITICAL</text>
+      <rect x="536" y="330" width="32" height="14" rx="4" fill="#7c3aed30"/>
+      <text x="552" y="341" font-size="9" fill="#a78bfa" text-anchor="middle">AI</text>
+      <text x="482" y="357" font-size="11" fill="#e5e7eb">Image missing alt text — hero banner</text>
+      <text x="840" y="341" font-size="10" fill="#6b7280" text-anchor="end">WCAG 1.1.1</text>
+    </g>
+
+    <!-- Card 2 — Serious -->
+    <g class="i2" style="opacity: 0;">
+      <rect x="468" y="378" width="410" height="46" rx="8" fill="#1a0f0a" stroke="#f9731630" stroke-width="1"/>
+      <rect x="468" y="378" width="4" height="46" rx="2" fill="#f97316"/>
+      <text x="482" y="395" font-size="10" font-weight="700" fill="#f97316">SERIOUS</text>
+      <rect x="536" y="384" width="38" height="14" rx="4" fill="#1e3a1e"/>
+      <text x="555" y="395" font-size="9" fill="#4ade80" text-anchor="middle">axe</text>
+      <text x="482" y="411" font-size="11" fill="#e5e7eb">Form input has no accessible label</text>
+      <text x="840" y="395" font-size="10" fill="#6b7280" text-anchor="end">WCAG 1.3.1</text>
+    </g>
+
+    <!-- Card 3 — Moderate -->
+    <g class="i3" style="opacity: 0;">
+      <rect x="468" y="432" width="410" height="46" rx="8" fill="#1a150a" stroke="#f59e0b30" stroke-width="1"/>
+      <rect x="468" y="432" width="4" height="46" rx="2" fill="#f59e0b"/>
+      <text x="482" y="449" font-size="10" font-weight="700" fill="#f59e0b">MODERATE</text>
+      <rect x="548" y="438" width="32" height="14" rx="4" fill="#7c3aed30"/>
+      <text x="564" y="449" font-size="9" fill="#a78bfa" text-anchor="middle">AI</text>
+      <text x="482" y="465" font-size="11" fill="#e5e7eb">Button text has insufficient contrast ratio</text>
+      <text x="840" y="449" font-size="10" fill="#6b7280" text-anchor="end">WCAG 1.4.3</text>
+    </g>
+
+    <!-- Card 4 — Moderate -->
+    <g class="i4" style="opacity: 0;">
+      <rect x="468" y="486" width="410" height="46" rx="8" fill="#1a150a" stroke="#f59e0b20" stroke-width="1"/>
+      <rect x="468" y="486" width="4" height="46" rx="2" fill="#f59e0b" opacity="0.7"/>
+      <text x="482" y="503" font-size="10" font-weight="700" fill="#f59e0b">MODERATE</text>
+      <rect x="548" y="492" width="38" height="14" rx="4" fill="#1e3a1e"/>
+      <text x="567" y="503" font-size="9" fill="#4ade80" text-anchor="middle">axe</text>
+      <text x="482" y="519" font-size="11" fill="#e5e7eb">Heading order skips h2 → h4</text>
+      <text x="840" y="503" font-size="10" fill="#6b7280" text-anchor="end">WCAG 1.3.1</text>
+    </g>
+
+  </g>
+
+  <!-- ══════════════════════════════════════════════════
+       BOTTOM BAR — Branding
+  ══════════════════════════════════════════════════ -->
+  <rect x="16" y="498" width="868" height="20" rx="0" fill="#0d0920" opacity="0.9"/>
+  <rect x="16" y="506" width="868" height="12" rx="0" fill="#0d0920" opacity="0.9"/>
+  <rect x="16" y="498" width="868" height="20" rx="0" fill="#0d0920"/>
+
+  <!-- Wordmark -->
+  <text x="450" y="530" font-size="12" font-weight="600" fill="#6d28d9" text-anchor="middle" letter-spacing="2">
+    ARIA ACCESS  ·  AI-Powered Web Accessibility
+  </text>
+
+  <!-- Loop the animation every 12 s by embedding a restart trigger -->
+  <animate attributeName="opacity" values="1" dur="12s" repeatCount="indefinite" begin="0s"/>
+</svg>

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question / start a discussion
+    url: https://github.com/supratimsarkar/aria-access/discussions
+    about: For questions, ideas, and general conversation use GitHub Discussions.
+  - name: Security vulnerability
+    url: https://github.com/supratimsarkar/aria-access/blob/main/SECURITY.md
+    about: Please report security issues privately — do not open a public issue.
