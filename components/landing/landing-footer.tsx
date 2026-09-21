@@ -75,7 +75,7 @@ export function LandingFooter() {
           <p>
             Built by{" "}
             <a
-              href="https://github.com/supratimsarkar"
+              href="https://github.com/codewithsupra"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Supratim Sarkar's GitHub (opens in new tab)"
@@ -85,7 +85,7 @@ export function LandingFooter() {
             </a>{" "}
             · Powered by axe-core and GPT-4o Vision
           </p>
-          <p>© 2025 Aria</p>
+          <p>© 2026 Aria</p>
         </div>
       </div>
     </footer>

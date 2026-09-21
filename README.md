@@ -6,7 +6,7 @@
 
 **AI-powered web accessibility scanner that finds what automated tools miss.**
 
-[![CI](https://github.com/supratimsarkar/aria-access/actions/workflows/ci.yml/badge.svg)](https://github.com/supratimsarkar/aria-access/actions/workflows/ci.yml)
+[![CI](https://github.com/codewithsupra/aria-acess.ai/actions/workflows/ci.yml/badge.svg)](https://github.com/codewithsupra/aria-acess.ai/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-7c3aed.svg)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://typescriptlang.org)
@@ -19,7 +19,7 @@
 
 <br/>
 
-**[Live Demo](https://aria-access.vercel.app) · [Report a Bug](https://github.com/supratimsarkar/aria-access/issues/new?template=bug_report.md) · [Request a Feature](https://github.com/supratimsarkar/aria-access/issues/new?template=feature_request.md)**
+**[Live Demo](https://aria-acess.vercel.app) · [Report a Bug](https://github.com/codewithsupra/aria-acess.ai/issues/new?template=bug_report.md) · [Request a Feature](https://github.com/codewithsupra/aria-acess.ai/issues/new?template=feature_request.md)**
 
 </div>
 
@@ -42,7 +42,7 @@ Aria Access closes that gap.
 | Contextual fix suggestions | ❌ | ✅ |
 | WCAG 2.2 criteria mapping | Partial | ✅ Full |
 | Severity triage | Basic | ✅ Critical → Minor |
-| Scan-to-report in seconds | Varies | ✅ ~10s |
+| Scan-to-report in seconds | Varies | ✅ under 30s |
 | No install required | ❌ | ✅ Pure SaaS |
 
 ---
@@ -53,9 +53,9 @@ Aria Access closes that gap.
 - **Accessibility score 0–100** with a breakdown by severity: Critical, Serious, Moderate, Minor
 - **WCAG 2.2 criteria tags** on every issue so developers know exactly which success criterion is violated
 - **Actionable fix suggestions** — not just "this is broken", but here's the code to fix it
-- **Instant, no-install** — paste a URL and get results in ~10 seconds
+- **Instant, no-install** — paste a URL and get results in under 30 seconds
 - **Auth-gated deep scans** via Clerk — free demo on curated sites, full scans for signed-in users
-- **Persistent scan history** with Neon Serverless Postgres + Drizzle ORM
+- **Nothing stored** — each report is returned to you once and never saved
 - **Fully accessible UI** — Aria Access itself passes its own scanner
 
 ---
@@ -80,7 +80,7 @@ Aria Access closes that gap.
 │                           │                                 │
 │                    Merged ScanResult                        │
 │                           │                                 │
-│              Neon Postgres (scan history)                   │
+│              Returned to client (not stored)                │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -110,7 +110,7 @@ Aria Access closes that gap.
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/supratimsarkar/aria-access.git
+git clone https://github.com/codewithsupra/aria-acess.ai.git
 cd aria-access
 npm install
 ```
@@ -159,7 +159,7 @@ Scan any of the curated demo sites (`github.com`, `stripe.com`, `amazon.com`) wi
 
 ### Full access (sign in)
 
-Scan **any URL** on the internet. Your scan history is saved to your account.
+Scan **any URL** on the internet. Scans are not stored: results are returned once and nothing is kept.
 
 ### Reading your report
 
@@ -222,8 +222,8 @@ aria-access/
 
 Contributions are very welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-Found a bug? [Open an issue.](https://github.com/supratimsarkar/aria-access/issues/new?template=bug_report.md)
-Have an idea? [Start a discussion.](https://github.com/supratimsarkar/aria-access/discussions)
+Found a bug? [Open an issue.](https://github.com/codewithsupra/aria-acess.ai/issues/new?template=bug_report.md)
+Have an idea? [Start a discussion.](https://github.com/codewithsupra/aria-acess.ai/discussions)
 
 ---
 
@@ -251,8 +251,8 @@ Aria Access makes it effortless to know where you stand and exactly what to fix.
 
 <div align="center">
 
-Built with care by [Supratim Sarkar](https://github.com/supratimsarkar)
+Built with care by [Supratim Sarkar](https://github.com/codewithsupra)
 
-**[Try it live →](https://aria-access.vercel.app)**
+**[Try it live →](https://aria-acess.vercel.app)**
 
 </div>

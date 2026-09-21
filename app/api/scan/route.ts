@@ -1,5 +1,12 @@
 import { scanPage, type NormalizedIssue } from "@/lib/scanner/scan-page";
 import { analyzeScreenshot, type AIIssue } from "@/lib/ai/analyze-screenshot";
+import {
+  isPrivateUrl,
+  isLoadError,
+  calculateScore,
+  sortBySeverity,
+  countBySeverity,
+} from "@/lib/scan-utils";
 
 export const maxDuration = 60;
 
@@ -8,53 +15,6 @@ const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 
 type Issue = NormalizedIssue | AIIssue;
-
-const SEVERITY_RANK: Record<string, number> = {
-  critical: 0,
-  serious: 1,
-  moderate: 2,
-  minor: 3,
-};
-
-const SEVERITY_DEDUCTIONS: Record<string, number> = {
-  critical: 15,
-  serious: 8,
-  moderate: 3,
-  minor: 1,
-};
-
-function isPrivateUrl(url: string): boolean {
-  try {
-    const { hostname } = new URL(url);
-    const h = hostname.replace(/^\[|\]$/g, "");
-    if (h === "localhost" || h === "::1") return true;
-    const ipv4 = h.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
-    if (ipv4) {
-      const [, a, b, c] = ipv4.map(Number);
-      if (a === 127 || a === 10 || a === 0) return true;
-      if (a === 172 && b >= 16 && b <= 31) return true;
-      if (a === 192 && b === 168) return true;
-    }
-    return false;
-  } catch {
-    return true;
-  }
-}
-
-function isLoadError(err: unknown): boolean {
-  const msg = err instanceof Error ? err.message : String(err);
-  return /net::|ERR_NAME_NOT_RESOLVED|ERR_CONNECTION_REFUSED|TimeoutError|Navigation timeout|ERR_ADDRESS_UNREACHABLE/i.test(
-    msg
-  );
-}
-
-function calculateScore(issues: Issue[]): number {
-  const deduction = issues.reduce(
-    (sum, issue) => sum + (SEVERITY_DEDUCTIONS[issue.severity] ?? 0),
-    0
-  );
-  return Math.max(0, 100 - deduction);
-}
 
 export async function POST(request: Request) {
   const ip =
@@ -134,19 +94,9 @@ export async function POST(request: Request) {
     aiIssues = [];
   }
 
-  const allIssues: Issue[] = [...axeIssues, ...aiIssues].sort(
-    (a, b) =>
-      (SEVERITY_RANK[a.severity] ?? 4) - (SEVERITY_RANK[b.severity] ?? 4)
-  );
-
+  const allIssues: Issue[] = sortBySeverity<Issue>([...axeIssues, ...aiIssues]);
   const score = calculateScore(allIssues);
-
-  const issuesBySeverity = {
-    critical: allIssues.filter((i) => i.severity === "critical").length,
-    serious: allIssues.filter((i) => i.severity === "serious").length,
-    moderate: allIssues.filter((i) => i.severity === "moderate").length,
-    minor: allIssues.filter((i) => i.severity === "minor").length,
-  };
+  const issuesBySeverity = countBySeverity(allIssues);
 
   return Response.json({
     url,
