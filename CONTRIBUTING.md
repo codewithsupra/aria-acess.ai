@@ -30,7 +30,7 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
    ```
 3. **Add the upstream remote:**
    ```bash
-   git remote add upstream https://github.com/supratimsarkar/aria-access.git
+   git remote add upstream https://github.com/codewithsupra/aria-acess.ai.git
    ```
 4. **Install dependencies:**
    ```bash
@@ -48,11 +48,11 @@ Use the [bug report template](.github/ISSUE_TEMPLATE/bug_report.md). Include ste
 
 ### Suggesting features
 
-Open a [feature request](.github/ISSUE_TEMPLATE/feature_request.md) or start a [GitHub Discussion](https://github.com/supratimsarkar/aria-access/discussions) for larger ideas before investing time in a PR.
+Open a [feature request](.github/ISSUE_TEMPLATE/feature_request.md) or start a [GitHub Discussion](https://github.com/codewithsupra/aria-acess.ai/discussions) for larger ideas before investing time in a PR.
 
 ### Submitting code
 
-1. Check the [open issues](https://github.com/supratimsarkar/aria-access/issues) — comment on one to claim it before starting
+1. Check the [open issues](https://github.com/codewithsupra/aria-acess.ai/issues) — comment on one to claim it before starting
 2. For new features, open an issue first to align on scope
 3. Branch off `main`:
    ```bash
@@ -143,4 +143,4 @@ docs(readme): add architecture diagram
 
 ## Questions?
 
-Start a [GitHub Discussion](https://github.com/supratimsarkar/aria-access/discussions) or reach out at supratim347@gmail.com.
+Start a [GitHub Discussion](https://github.com/codewithsupra/aria-acess.ai/discussions) or reach out at supratim347@gmail.com.
